@@ -1,0 +1,12 @@
+<?php
+    function recia_form_alter(&$form, &$form_state, $form_id) {
+      $formsId = ['webform_node_form','form1_node_form'];
+      if(!in_array($form_id,$formsId))return;
+      $form['revision_information']['#access'] = false;
+      $form['menu']['#access'] = false;
+      $form['comment_settings']['#access'] = false;
+      $form['path']['#access'] = false;
+      $form['author']['#access'] = false;
+      $form['options']['#access'] = false;
+    }
+?>
