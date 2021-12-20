@@ -1,0 +1,61 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright Gégory Brousse <pro@gregory-brousse.fr>
+# Generated from files:
+#  recia.module: n/a
+#  recia.info: n/a
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: recia-7.x-1.1\n"
+"POT-Creation-Date: 2021-12-17 12:14+0100\n"
+"PO-Revision-Date: 2021-12-17 15:15+0100\n"
+"Language-Team: FR <pro@gregory-brousse.fr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.0\n"
+"Last-Translator: Grégory Brousse <pro@gregory-brousse.fr>\n"
+"Language: fr\n"
+
+#: recia.module:19
+msgid "Return Home button"
+msgstr "Bouton Retour à l’accueil"
+
+#: recia.module:23
+msgid "User Menu (user)"
+msgstr "Menu utilisateur (utilisateur)"
+
+#: recia.module:29
+msgid "User Menu (editor)"
+msgstr "Menu utilisateur (éditeur)"
+
+#: recia.module:44
+msgid "return to home"
+msgstr "retour à l'accueil"
+
+#: recia.module:56;88
+msgid "Disconnect"
+msgstr "Déconnexion"
+
+#: recia.module:66;71
+msgid "Create a new form"
+msgstr "Créer un nouveau formulaire"
+
+#: recia.module:74
+msgid "Create a form from a template"
+msgstr "Créer un formulaire à partir d’un modèle"
+
+#: recia.module:85
+msgid "My forms"
+msgstr "Mes formulaires"
+
+#: recia.info:0;0
+msgid "Recia"
+msgstr ""
+
+#: recia.info:0
+msgid "Recia tweaks to Yackforms"
+msgstr "Modification de Yakform pour Recia"
