@@ -1,12 +1,97 @@
 <?php
-    function recia_form_alter(&$form, &$form_state, $form_id) {
-      $formsId = ['webform_node_form','form1_node_form'];
-      if(!in_array($form_id,$formsId))return;
-      $form['revision_information']['#access'] = false;
-      $form['menu']['#access'] = false;
-      $form['comment_settings']['#access'] = false;
-      $form['path']['#access'] = false;
-      $form['author']['#access'] = false;
-      $form['options']['#access'] = false;
+
+
+  function recia_form_alter(&$form, &$form_state, $form_id) {
+    $formsId = ['webform_node_form','form1_node_form'];
+    if(!in_array($form_id,$formsId))return;
+    $form['revision_information']['#access'] = false;
+    $form['menu']['#access'] = false;
+    $form['comment_settings']['#access'] = false;
+    $form['path']['#access'] = false;
+    $form['author']['#access'] = false;
+    $form['options']['#access'] = false;
+  }
+
+  function recia_block_info() {
+
+    // This example comes from node.module.
+    $blocks['recia_home_button'] = array(
+      'info' => t('Return Home button'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+    );
+    $blocks['recia_user_menu'] = array(
+      'info' => t('User Menu (user)'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+      'pages' => "node/add\nnode/add/*",
+    );
+    $blocks['recia_user_menu_redac'] = array(
+      'info' => t('User Menu (editor)'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+      'pages' => "node/add\nnode/add/*",
+    );
+    return $blocks;
+  }
+
+  function recia_block_view($delta) {
+    global $user;
+    global $base_url;
+    $block = array();
+    switch($delta){
+      case 'recia_home_button':
+        $block['content']['#markup'] ='<footer id="homeback">';
+        $block['content']['#markup'] .='  <a class="button" href="/">'.strtoupper(t('return to home')).'</a>';
+        $block['content']['#markup'] .='</footer>';
+        break;
+      case 'recia_user_menu':
+        $block['content']['#markup'] ='<div class="navbar-nav">';
+        $block['content']['#markup'] .='  <div class="dropdown">';
+        $block['content']['#markup'] .='    <button class="dropdown-toggle">';
+        $block['content']['#markup'] .='      '.$user->name;
+        $block['content']['#markup'] .='      <span class="caret"></span>';
+        $block['content']['#markup'] .='    </button>';
+        $block['content']['#markup'] .='    <ul class="dropdown-menu">';
+        $block['content']['#markup'] .='      <li>';
+        $block['content']['#markup'] .='        <a href="'.$base_url.'/user/logout">'.t('Disconnect').'</a>';
+        $block['content']['#markup'] .='      </li>';
+        $block['content']['#markup'] .='    </ul>';
+        $block['content']['#markup'] .=' </div>';
+        $block['content']['#markup'] .='</div>';
+        break;
+      case 'recia_user_menu_redac':
+        $block['content']['#markup'] ='<div class="navbar-nav">';
+        $block['content']['#markup'] .='  <div class="dropdown">';
+        $block['content']['#markup'] .='    <button class="button">';
+        $block['content']['#markup'] .='      '.t("Create a new form");
+        $block['content']['#markup'] .='      <span class="caret"></span>';
+        $block['content']['#markup'] .='    </button>';
+        $block['content']['#markup'] .='    <ul class="dropdown-menu">';
+        $block['content']['#markup'] .='      <li>';
+        $block['content']['#markup'] .='        <a href="'.$base_url.'/node/add/form1">'.t("Create a new form").'</a>';
+        $block['content']['#markup'] .='      </li>';
+        $block['content']['#markup'] .='      <li>';
+        $block['content']['#markup'] .='        <a href="'.$base_url.'/templates">'.t("Create a form from a template").'</a>';
+        $block['content']['#markup'] .='      </li>';
+        $block['content']['#markup'] .='    </ul>';
+        $block['content']['#markup'] .='  </div>';
+        $block['content']['#markup'] .='  <div class="dropdown">';
+        $block['content']['#markup'] .='    <button class="dropdown-toggle">';
+        $block['content']['#markup'] .='      '.$user->name;
+        $block['content']['#markup'] .='      <span class="caret"></span>';
+        $block['content']['#markup'] .='    </button>';
+        $block['content']['#markup'] .='    <ul class="dropdown-menu">';
+        $block['content']['#markup'] .='      <li>';
+        $block['content']['#markup'] .='        <a href="'.$base_url.'?forms">'.t('My forms').'</a>';
+        $block['content']['#markup'] .='      </li>';
+        $block['content']['#markup'] .='      <li>';
+        $block['content']['#markup'] .='        <a href="'.$base_url.'/user/logout">'.t('Disconnect').'</a>';
+        $block['content']['#markup'] .='      </li>';
+        $block['content']['#markup'] .='    </ul>';
+        $block['content']['#markup'] .='  </div>';
+        $block['content']['#markup'] .='</div>';
+        break;
     }
+    return $block;
+  }
 ?>
