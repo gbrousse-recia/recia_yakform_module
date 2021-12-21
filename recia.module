@@ -1,6 +1,5 @@
 <?php
 
-
   function recia_form_alter(&$form, &$form_state, $form_id) {
     $formsId = ['webform_node_form','form1_node_form'];
     if(!in_array($form_id,$formsId))return;
@@ -93,5 +92,33 @@
         break;
     }
     return $block;
+  }
+
+  /**
+   * Implements hook_views_api
+   *
+   * @return void
+   */
+  function recia_views_api () {
+    return array(
+      'api' => 3,
+    );
+  }
+
+  /**
+  * Implementation of hook_views_default_views
+  **/
+  function recia_views_default_views() {
+    $views = array();
+    $viewsPath = drupal_get_path('module', 'recia'). '/views';
+    $files = file_scan_directory($viewsPath, '/\.view\.inc/');
+    foreach ($files as $filepath => $file) {
+      module_load_include('inc', 'recia', 'views/'.$file->name);
+      if (function_exists('recia_view_render')) {
+        $view = recia_view_render();
+        $views[$view->name] = $view;
+      }
+    }
+    return $views;
   }
 ?>
