@@ -1,8 +1,7 @@
 <?php
-  $name = "recia-my-forms";
-  function recia_view_render(){
+  function my_forms_view_loader(){
     $view = new view();
-    $view->name = 'recia-my-forms';
+    $view->name = 'my_forms';
     $view->description = '';
     $view->tag = 'recia';
     $view->base_table = 'webform';
@@ -13,7 +12,7 @@
 
     /* Display: Master */
     $handler = $view->new_display('default', 'Master', 'default');
-    $handler->display->display_options['title'] = 'My forms';
+    $handler->display->display_options['title'] = 'Mes formulaires';
     $handler->display->display_options['use_more_always'] = FALSE;
     $handler->display->display_options['use_more_text'] = 'plus';
     $handler->display->display_options['access']['type'] = 'none';
@@ -99,12 +98,6 @@
     $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
     $handler->display->display_options['filters']['uid_current']['value'] = '1';
 
-    /* Display: Page */
-    $handler = $view->new_display('page', 'Page', 'page');
-    $handler->display->display_options['path'] = 'mes-formulaires';
-
-    /* Display: Block */
-    $handler = $view->new_display('block', 'Block', 'block');
     $translatables['recia-my-forms'] = array(
       t('Master'),
       t('Mes Formulaires'),

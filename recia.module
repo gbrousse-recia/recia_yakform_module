@@ -114,8 +114,9 @@
     $files = file_scan_directory($viewsPath, '/\.view\.inc/');
     foreach ($files as $filepath => $file) {
       module_load_include('inc', 'recia', 'views/'.$file->name);
-      if (function_exists('recia_view_render')) {
-        $view = recia_view_render();
+      $loader = str_replace(['.view','-'],'_',$file->name).'view_loader';
+      if (function_exists($loader)) {
+        $view = $loader();
         $views[$view->name] = $view;
       }
     }
