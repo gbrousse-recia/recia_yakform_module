@@ -40,7 +40,7 @@
     switch($delta){
       case 'recia_home_button':
         $block['content']['#markup'] ='<footer id="homeback">';
-        $block['content']['#markup'] .='  <a class="button" href="/">'.strtoupper(t('return to home')).'</a>';
+        $block['content']['#markup'] .='  <a class="button" href="'.$base_url.'">'.strtoupper(t('return to home')).'</a>';
         $block['content']['#markup'] .='</footer>';
         break;
       case 'recia_user_menu':
