@@ -52,10 +52,10 @@
          if (user_is_logged_in()) {
             return;
           }
-          $block['content']['#markup'] =  '<div class="user-block-connect">';
+          $block['content']['#markup'] =  '<div class="navbar-nav">';
           $block['content']['#markup'] .= ' <a href="'.$base_url.'/user" class="btn btn-primary btn-sm" role="button">'.t("Log in").'</a>';
           $block['content']['#markup'] .= '</div>';
-          $block['content']['#markup'] .= '</div class="user-block-connect">';
+          $block['content']['#markup'] .= '</div>';
           break;
       case 'recia_user_menu':
         if (!user_is_logged_in()) {
