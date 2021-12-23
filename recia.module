@@ -18,6 +18,11 @@
       'info' => t('Return Home button'),
       'cache' => DRUPAL_CACHE_PER_PAGE,
     );
+    $blocks['recia_user_menu_anonymous'] = array(
+      'info' => t('User Menu (anonymous)'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    );
     $blocks['recia_user_menu'] = array(
       'info' => t('User Menu (user)'),
       'cache' => DRUPAL_CACHE_PER_PAGE,
@@ -43,7 +48,18 @@
         $block['content']['#markup'] .='  <a class="button" href="'.$base_url.'">'.strtoupper(t('return to home')).'</a>';
         $block['content']['#markup'] .='</footer>';
         break;
+      case 'recia_user_menu_anonymous':
+         if (user_is_logged_in()) {
+            return;
+          }
+          $block['content']['#markup'] =  '<div class="user-block-connect">';
+          $block['content']['#markup'] .= ' <a href="'.$base_url.'" class="btn btn-primary btn-sm" role="button">'.t("Log in").'</a>';
+          $block['content']['#markup'] .= '<div>';
+          break;
       case 'recia_user_menu':
+        if (!user_is_logged_in()) {
+          return;
+        }
         $block['content']['#markup'] ='<div class="navbar-nav">';
         $block['content']['#markup'] .='  <div class="dropdown">';
         $block['content']['#markup'] .='    <button class="dropdown-toggle">';
@@ -59,6 +75,9 @@
         $block['content']['#markup'] .='</div>';
         break;
       case 'recia_user_menu_redac':
+        if (!user_is_logged_in()) {
+          return;
+        }
         $block['content']['#markup'] ='<div class="navbar-nav">';
         $block['content']['#markup'] .='  <div class="dropdown">';
         $block['content']['#markup'] .='    <button class="button">';
