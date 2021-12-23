@@ -54,9 +54,7 @@
           }
           $block['content']['#markup'] =  '<div class="user-block-connect">';
           $block['content']['#markup'] .= ' <a href="'.$base_url.'/user" class="btn btn-primary btn-sm" role="button">'.t("Log in").'</a>';
-          $block['content']['#markup'] .= '<div>';
-          $block['content']['#markup'] .= '<a href="'.$base_url.'/fonctionnalites" class="btn btn-default btn-sm" role="button">' . t("Features") . '</a>';
-          $block['content']['#markup'] .= ' </div> </div>';
+          $block['content']['#markup'] .= '</div>';
           $block['content']['#markup'] .= '</div class="user-block-connect">';
           break;
       case 'recia_user_menu':
