@@ -53,7 +53,7 @@
             return;
           }
           $block['content']['#markup'] =  '<div class="navbar-nav">';
-          $block['content']['#markup'] .= ' <a href="'.$base_url.'/user" class="btn btn-primary btn-sm" role="button">'.t("Log in").'</a>';
+          $block['content']['#markup'] .= ' <a href="'.$base_url.'/user" class="button btn btn-primary btn-sm" role="button">'.t("Log in").'</a>';
           $block['content']['#markup'] .= '</div>';
           $block['content']['#markup'] .= '</div>';
           break;
