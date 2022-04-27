@@ -1,4 +1,15 @@
 <?php
+  /**
+   * Permissions
+   */
+  function recia_permission() {
+    return array(
+      'recia manage forms_templates' => array(
+        'title' => t('Allow user to manage yakforms templates'),
+        'restricted acces'=>true,
+      )
+    );
+  }
 
   function recia_form_alter(&$form, &$form_state, $form_id) {
     $formsId = ['webform_node_form','form1_node_form'];
@@ -9,34 +20,53 @@
     $form['path']['#access'] = false;
     $form['author']['#access'] = false;
     $form['options']['#access'] = false;
+    $form['#attached']['css'] = [
+      '#edit-field-form1-template {display:none;}',
+      'inline'
+    ];
+    if(!user_access('recia manage forms_templates')){
+      $form['field_form1_template']['#access'] = false;
+      $form['field_form1_template_desc']['#access'] = false;
+    }
   }
 
   function recia_block_info() {
 
     // This example comes from node.module.
     $blocks['recia_home_button'] = array(
-      'info' => t('Return Home button'),
+      'info' => t('Recia : Return Home button'),
       'cache' => DRUPAL_CACHE_PER_PAGE,
     );
     $blocks['recia_user_menu_anonymous'] = array(
-      'info' => t('User Menu (anonymous)'),
+      'info' => t('Recia : User Menu (anonymous)'),
       'cache' => DRUPAL_CACHE_PER_PAGE,
       'visibility' => BLOCK_VISIBILITY_NOTLISTED
     );
     $blocks['recia_user_menu'] = array(
-      'info' => t('User Menu (user)'),
+      'info' => t('Recia : User Menu (user)'),
       'cache' => DRUPAL_CACHE_PER_PAGE,
       'visibility' => BLOCK_VISIBILITY_NOTLISTED,
       'pages' => "node/add\nnode/add/*",
     );
     $blocks['recia_user_menu_redac'] = array(
-      'info' => t('User Menu (editor)'),
+      'info' => t('Recia : User Menu (editor)'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+      'pages' => "node/add\nnode/add/*",
+    );
+    $blocks['recia_user_menu_all'] = array(
+      'info' => t('Recia : User Menu'),
       'cache' => DRUPAL_CACHE_PER_PAGE,
       'visibility' => BLOCK_VISIBILITY_NOTLISTED,
       'pages' => "node/add\nnode/add/*",
     );
     $blocks['recia_form_menu'] = array(
-      'info' => t('Form Menu'),
+      'info' => t('Recia : Form Menu'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    );
+    $blocks['recia_form_menu_home'] = array(
+      'info' => t('Recia : Form Menu Home'),
       'cache' => DRUPAL_CACHE_PER_PAGE,
       'visibility' => BLOCK_VISIBILITY_NOTLISTED,
     );
@@ -115,8 +145,53 @@
         $block['content']['#markup'] .='  </div>';
         $block['content']['#markup'] .='</div>';
         break;
-        case 'recia_form_menu':
+        case 'recia_user_menu_all':
           if (!user_is_logged_in()) {
+              $block['content']['#markup'] =  '<div class="navbar-nav">';
+              $block['content']['#markup'] .= ' <a href="'.$base_url.'/user" class="button btn btn-primary btn-sm" role="button">'.t("Log in").'</a>';
+              $block['content']['#markup'] .= '</div>';
+              $block['content']['#markup'] .= '</div>';
+          }else{
+            $block['content']['#markup'] ='<div class="navbar-nav">';
+            if (user_access('create webform content')) {
+              $block['content']['#markup'] .='  <div class="dropdown">';
+              $block['content']['#markup'] .='    <button class="button">';
+              $block['content']['#markup'] .='      '.t("Create a new form");
+              $block['content']['#markup'] .='      <span class="caret"></span>';
+              $block['content']['#markup'] .='    </button>';
+              $block['content']['#markup'] .='    <ul class="dropdown-menu">';
+              $block['content']['#markup'] .='      <li>';
+              $block['content']['#markup'] .='        <a href="'.$base_url.'/node/add/form1">'.t("Create a new form").'</a>';
+              $block['content']['#markup'] .='      </li>';
+              if (user_access('recia manage forms_templates')) {
+                  $block['content']['#markup'] .='      <li>';
+                  $block['content']['#markup'] .='        <a href="'.$base_url.'/templates">'.t("Create a form from a template").'</a>';
+                  $block['content']['#markup'] .='      </li>';
+              }
+              $block['content']['#markup'] .='    </ul>';
+              $block['content']['#markup'] .='  </div>';
+            }
+            $block['content']['#markup'] .='  <div class="dropdown">';
+            $block['content']['#markup'] .='    <button class="dropdown-toggle">';
+            $block['content']['#markup'] .='      '.$user->name;
+            $block['content']['#markup'] .='      <span class="caret"></span>';
+            $block['content']['#markup'] .='    </button>';
+            $block['content']['#markup'] .='    <ul class="dropdown-menu">';
+            if (user_access('create webform content')) {
+              $block['content']['#markup'] .='      <li>';
+              $block['content']['#markup'] .='        <a href="'.$base_url.'?forms">'.t('My forms').'</a>';
+              $block['content']['#markup'] .='      </li>';
+            }
+            $block['content']['#markup'] .='      <li>';
+            $block['content']['#markup'] .='        <a href="'.$base_url.'/user/logout">'.t('Disconnect').'</a>';
+            $block['content']['#markup'] .='      </li>';
+            $block['content']['#markup'] .='    </ul>';
+            $block['content']['#markup'] .='  </div>';
+            $block['content']['#markup'] .='</div>';
+          }
+          break;
+        case 'recia_form_menu':
+          if (!user_is_logged_in() || !user_access('create webform content')) {
             return;
           }
           $block['content']['#markup'] ='<div class="navbar-nav">';
@@ -129,12 +204,29 @@
           $block['content']['#markup'] .='      <li>';
           $block['content']['#markup'] .='        <a href="'.$base_url.'/node/add/form1">'.t("Create a new form").'</a>';
           $block['content']['#markup'] .='      </li>';
-          $block['content']['#markup'] .='      <li>';
-          $block['content']['#markup'] .='        <a href="'.$base_url.'/templates">'.t("Create a form from a template").'</a>';
-          $block['content']['#markup'] .='      </li>';
+          if (user_access('recia manage forms_templates')) {
+              $block['content']['#markup'] .='      <li>';
+              $block['content']['#markup'] .='        <a href="'.$base_url.'/templates">'.t("Create a form from a template").'</a>';
+              $block['content']['#markup'] .='      </li>';
+          }
           $block['content']['#markup'] .='    </ul>';
           $block['content']['#markup'] .='  </div>';
           $block['content']['#markup'] .='</div>';
+          break;
+        case 'recia_form_menu_home':
+          if (!user_is_logged_in() || !user_access('create webform content')) {
+            return;
+          }
+          $block['content']['#markup'] ='    <ul class="menu">';
+          $block['content']['#markup'] .='      <li>';
+          $block['content']['#markup'] .='        <a href="'.$base_url.'/node/add/form1">'.t("Create a new form").'</a>';
+          $block['content']['#markup'] .='      </li>';
+          if (user_access('recia manage forms_templates')) {
+              $block['content']['#markup'] .='      <li>';
+              $block['content']['#markup'] .='        <a href="'.$base_url.'/templates">'.t("Create a form from a template").'</a>';
+              $block['content']['#markup'] .='      </li>';
+          }
+          $block['content']['#markup'] .='    </ul>';
           break;
     }
     return $block;
