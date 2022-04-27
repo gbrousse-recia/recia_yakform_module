@@ -19,35 +19,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: recia.module:19
-msgid "Return Home button"
+#: recia.module:8
+msgid "Allow user to manage yakforms templates"
 msgstr ""
 
-#: recia.module:23
-msgid "User Menu (user)"
+#: recia.module:37
+msgid "Recia : Return Home button"
 msgstr ""
 
-#: recia.module:29
-msgid "User Menu (editor)"
+#: recia.module:41
+msgid "Recia : User Menu (anonymous)"
 msgstr ""
 
-#: recia.module:44
+#: recia.module:46
+msgid "Recia : User Menu (user)"
+msgstr ""
+
+#: recia.module:52
+msgid "Recia : User Menu (editor)"
+msgstr ""
+
+#: recia.module:58
+msgid "Recia : User Menu"
+msgstr ""
+
+#: recia.module:64
+msgid "Recia : Form Menu"
+msgstr ""
+
+#: recia.module:69
+msgid "Recia : Form Menu Home"
+msgstr ""
+
+#: recia.module:83
 msgid "return to home"
 msgstr ""
 
-#: recia.module:56;88
+#: recia.module:91;151
+msgid "Log in"
+msgstr ""
+
+#: recia.module:107;142;186
 msgid "Disconnect"
 msgstr ""
 
-#: recia.module:66;71
+#: recia.module:120;125;159;164;200;205;222
 msgid "Create a new form"
 msgstr ""
 
-#: recia.module:74
+#: recia.module:128;168;209;226
 msgid "Create a form from a template"
 msgstr ""
 
-#: recia.module:85
+#: recia.module:139;182 views/my-forms.view.inc:110
 msgid "My forms"
 msgstr ""
 
