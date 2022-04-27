@@ -1,2 +1,3 @@
 # recia_yakform_module
-Module for Yakform
+## Description
+Ce module Drupal contient les blocs & les vues utilisées par le GIP Recia avec Yakforms
