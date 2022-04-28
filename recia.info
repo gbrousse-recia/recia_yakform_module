@@ -8,3 +8,4 @@ php = 7.3
 dependencies[] = yakforms
 
 scripts[] = js/postMessage-resize-iframe-in-parent.js
+scripts[] = js/backToTop.js
