@@ -6,3 +6,5 @@ core = 7.x
 php = 7.3
 
 dependencies[] = yakforms
+
+scripts[] = js/postMessage-resize-iframe-in-parent.js
