@@ -153,7 +153,7 @@
               $block['content']['#markup'] .= '</div>';
           }else{
             $block['content']['#markup'] ='<div class="navbar-nav">';
-            if (user_access('create webform content')) {
+            if (user_access('create webform content') || user_access('create form1 content')) {
               $block['content']['#markup'] .='  <div class="dropdown">';
               $block['content']['#markup'] .='    <button class="button">';
               $block['content']['#markup'] .='      '.t("Create a new form");
@@ -177,7 +177,7 @@
             $block['content']['#markup'] .='      <span class="caret"></span>';
             $block['content']['#markup'] .='    </button>';
             $block['content']['#markup'] .='    <ul class="dropdown-menu">';
-            if (user_access('create webform content')) {
+            if (user_access('create webform content') || user_access('create form1 content')) {
               $block['content']['#markup'] .='      <li>';
               $block['content']['#markup'] .='        <a href="'.$base_url.'?forms">'.t('My forms').'</a>';
               $block['content']['#markup'] .='      </li>';
@@ -191,7 +191,7 @@
           }
           break;
         case 'recia_form_menu':
-          if (!user_is_logged_in() || !user_access('create webform content')) {
+          if (!user_is_logged_in() || (!user_access('create webform content') && !user_access('create form1 content'))) {
             return;
           }
           $block['content']['#markup'] ='<div class="navbar-nav">';
@@ -214,7 +214,7 @@
           $block['content']['#markup'] .='</div>';
           break;
         case 'recia_form_menu_home':
-          if (!user_is_logged_in() || !user_access('create webform content')) {
+          if (!user_is_logged_in() || (!user_access('create webform content') && !user_access('create form1 content'))) {
             return;
           }
           $block['content']['#markup'] ='    <ul class="menu">';
