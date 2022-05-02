@@ -221,7 +221,7 @@ if (!postMessage_resize_iframe_in_parent) {
 
     var click = function () {
       mylog("click");
-      mayRegisterCheckResize();
+      setTimeout('mayRegisterCheckResize',1000);
     };
 
     if (window.addEventListener) {
