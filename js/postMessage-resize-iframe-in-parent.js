@@ -160,8 +160,8 @@ if (!postMessage_resize_iframe_in_parent) {
             previousHeight +
             ") "
         );
-      //else
-      //    mylog("heights unchanged " + heights);
+      else
+        mylog("heights unchanged " + heights);
 
       if (kind !== "load" && !changed) {
         // ignore
