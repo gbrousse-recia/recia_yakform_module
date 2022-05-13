@@ -34,6 +34,13 @@
     $items['node/%webform_menu/webform/ws-export']['access callback']='webform_share_menu_access';
   }
 
+  function recia_node_view($node, $view_mode, $langcode) {
+    if(!$node->content['webform']['#enabled'] && webform_submission_user_limit_check($node)){
+      $message = t('You have already submitted this form.');
+      drupal_set_message($message, 'status', FALSE);
+    }
+  }
+
   function recia_block_info() {
 
     // This example comes from node.module.
