@@ -37,6 +37,7 @@
   function recia_node_view($node, $view_mode, $langcode) {
     if(!$node->content['webform']['#enabled'] && webform_submission_user_limit_check($node)){
       $message = t('You have already submitted this form.');
+      $message .= ' ' . t('<a href="!url">View your previous submissions</a>.', array('!url' => url('node/' . $node->nid . '/submissions')));
       drupal_set_message($message, 'status', FALSE);
     }
   }
