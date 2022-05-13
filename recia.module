@@ -30,6 +30,10 @@
     }
   }
 
+  function recia_menu_alter(&$items) {
+    $items['node/%webform_menu/webform/ws-export']['access callback']='webform_share_menu_access';
+  }
+
   function recia_block_info() {
 
     // This example comes from node.module.
