@@ -29,8 +29,8 @@
       $form['field_form1_template_desc']['#access'] = false;
     }
 
-    $form['field-form1-results-public']['#access'] = false;
-    $form['form1-results-access']['#access'] = false;
+    $form['field_form1_results_public']['#access'] = false;
+    $form['field_form1_results_access']['#access'] = false;
   }
 
   function recia_menu_alter(&$items) {
