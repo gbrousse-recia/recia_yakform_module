@@ -91,6 +91,9 @@
     $block = array();
     switch($delta){
       case 'recia_home_button':
+        if (!user_is_logged_in()) {
+          return;
+        }
         $block['content']['#markup'] ='<footer id="homeback">';
         $block['content']['#markup'] .='  <a class="button" href="'.$base_url.'">'.strtoupper(t('return to home')).'</a>';
         $block['content']['#markup'] .='</footer>';
