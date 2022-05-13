@@ -89,6 +89,8 @@
     global $user;
     global $base_url;
     $block = array();
+    $logOutUrl = $base_url.'/user/logout';
+    if (module_exists('cas')) $logOutUrl = $base_url.'/caslogout';
     switch($delta){
       case 'recia_home_button':
         if (!user_is_logged_in()) {
@@ -103,7 +105,7 @@
             return;
           }
           $block['content']['#markup'] =  '<div class="navbar-nav">';
-          $block['content']['#markup'] .= ' <a href="'.$base_url.'/user" class="button btn btn-primary btn-sm" role="button">'.t("Log in").'</a>';
+          $block['content']['#markup'] .= ' <a href="'.$base_url.'" class="button btn btn-primary btn-sm" role="button">'.t("Log in").'</a>';
           $block['content']['#markup'] .= '</div>';
           $block['content']['#markup'] .= '</div>';
           break;
@@ -119,7 +121,7 @@
         $block['content']['#markup'] .='    </button>';
         $block['content']['#markup'] .='    <ul class="dropdown-menu">';
         $block['content']['#markup'] .='      <li>';
-        $block['content']['#markup'] .='        <a href="'.$base_url.'/user/logout">'.t('Disconnect').'</a>';
+        $block['content']['#markup'] .='        <a href="'.$logOutUrl.'">'.t('Disconnect').'</a>';
         $block['content']['#markup'] .='      </li>';
         $block['content']['#markup'] .='    </ul>';
         $block['content']['#markup'] .=' </div>';
@@ -154,7 +156,7 @@
         $block['content']['#markup'] .='        <a href="'.$base_url.'?forms">'.t('My forms').'</a>';
         $block['content']['#markup'] .='      </li>';
         $block['content']['#markup'] .='      <li>';
-        $block['content']['#markup'] .='        <a href="'.$base_url.'/user/logout">'.t('Disconnect').'</a>';
+        $block['content']['#markup'] .='        <a href="'.$logOutUrl.'">'.t('Disconnect').'</a>';
         $block['content']['#markup'] .='      </li>';
         $block['content']['#markup'] .='    </ul>';
         $block['content']['#markup'] .='  </div>';
@@ -198,7 +200,7 @@
               $block['content']['#markup'] .='      </li>';
             }
             $block['content']['#markup'] .='      <li>';
-            $block['content']['#markup'] .='        <a href="'.$base_url.'/user/logout">'.t('Disconnect').'</a>';
+            $block['content']['#markup'] .='        <a href="'.$logOutUrl.'">'.t('Disconnect').'</a>';
             $block['content']['#markup'] .='      </li>';
             $block['content']['#markup'] .='    </ul>';
             $block['content']['#markup'] .='  </div>';
