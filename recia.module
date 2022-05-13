@@ -160,7 +160,7 @@
         case 'recia_user_menu_all':
           if (!user_is_logged_in()) {
               $block['content']['#markup'] =  '<div class="navbar-nav">';
-              $block['content']['#markup'] .= ' <a href="'.$base_url.'/user" class="button btn btn-primary btn-sm" role="button">'.t("Log in").'</a>';
+              $block['content']['#markup'] .= ' <a href="'.$base_url.'/" class="button btn btn-primary btn-sm" role="button">'.t("Log in").'</a>';
               $block['content']['#markup'] .= '</div>';
               $block['content']['#markup'] .= '</div>';
           }else{
