@@ -97,4 +97,5 @@ function yakforms_custom_field_instances() {
       'weight' => 5,
     ),
   );
+  return $field_instances;
 }
