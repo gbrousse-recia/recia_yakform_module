@@ -1,7 +1,4 @@
 <?php
-  /* Load sub-modules */
-  include_once 'recia.limit.inc';
-
   /**
    * Permissions
    */
