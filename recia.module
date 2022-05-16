@@ -159,10 +159,10 @@
         break;
         case 'recia_user_menu_all':
           if (!user_is_logged_in()) {
-              $block['content']['#markup'] =  '<div class="navbar-nav">';
+              /*$block['content']['#markup'] =  '<div class="navbar-nav">';
               $block['content']['#markup'] .= l(t("Connexion"),"cas",array('attributes'=> array('class' =>array('button','btn','btn-primary','btn-sm')),'query' => drupal_get_destination()));//' <a href="'.$base_url.'/" class="button btn btn-primary btn-sm" role="button">'.t("Log in").'</a>';
               $block['content']['#markup'] .= '</div>';
-              $block['content']['#markup'] .= '</div>';
+              $block['content']['#markup'] .= '</div>';*/
           }else{
             $block['content']['#markup'] ='<div class="navbar-nav">';
             if (user_access('create webform content') || user_access('create form1 content')) {
