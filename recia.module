@@ -2,7 +2,7 @@
   /**
    * Chargements
    */
-  module_load_include('inc', 'recia', 'recia.translations');
+  module_load_include('inc', 'recia', 'recia.mail');
 
 
 
