@@ -48,7 +48,7 @@
     $registry['webform_emails_form']['function']    = 'recia_confirm_email_emails_form';
   }
 
-  function theme_webform_confirm_email_emails_form($variables) {
+  function recia_confirm_email_emails_form($variables) {
     return '';
   }
 
