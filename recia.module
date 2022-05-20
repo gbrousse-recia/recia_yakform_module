@@ -44,8 +44,12 @@
     $items['node/%webform_menu/webform/ws-export']['access callback']='webform_share_menu_access';
   }
 
-  function recia_page_alter(&$page) {
-    echo '<!--'.print_r($page['content'],true).'-->';
+  function recia_theme_registry_alter(&$registry) {
+    $registry['webform_emails_form']['function']    = 'recia_confirm_email_emails_form';
+  }
+
+  function theme_webform_confirm_email_emails_form($variables) {
+    return '';
   }
 
   function recia_block_info() {
