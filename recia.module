@@ -44,6 +44,10 @@
     $items['node/%webform_menu/webform/ws-export']['access callback']='webform_share_menu_access';
   }
 
+  function recia_page_alter(&$page) {
+    echo '<!--'.print_r($page['content'],true).'-->';
+  }
+
   function recia_block_info() {
 
     // This example comes from node.module.
@@ -280,13 +284,6 @@
     return $views;
   }
 
-  /**
-   * Implementation of hook_views_pre_render
-   */
-  function recia_views_pre_render(&$view){
-    echo '<!--';
-    print_r($view);
-    echo '-->';
-  }
+
 ?>
 
