@@ -1,5 +1,12 @@
 <?php
   /**
+   * Chargements
+   */
+  module_load_include('inc', 'recia', 'recia.translations');
+
+
+
+  /**
    * Permissions
    */
   function recia_permission() {
