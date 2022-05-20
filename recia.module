@@ -2,7 +2,7 @@
   /**
    * Chargements
    */
-  //module_load_include('inc', 'recia', 'recia.mail');
+
 
 
 
@@ -279,4 +279,14 @@
     }
     return $views;
   }
+
+  /**
+   * Implementation of hook_views_pre_render
+   */
+  function recia_views_pre_render(&$view){
+    echo '<!--';
+    print_r($view);
+    echo '-->';
+  }
 ?>
+
