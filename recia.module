@@ -45,7 +45,7 @@
   }
 
   function recia_theme_registry_alter(&$registry) {
-    watchdog('recia', 'alter');
+    watchdog('recia', 'alter'.print_r($registry,true));
     $registry['webform_emails_form']['function']  = 'recia_confirm_email_emails_form';
   }
 
