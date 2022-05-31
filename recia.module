@@ -21,7 +21,7 @@
     $modulesList = module_list();
     $form['recia_modules'] = array(
       '#type' => 'fieldset',
-      '#title' => t('Modules gestion').,
+      '#title' => t('Modules gestion'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,  
     );
