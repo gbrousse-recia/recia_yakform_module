@@ -101,6 +101,7 @@
     $output = '';
     $output .= theme('table', array('header' => $header, 'rows' => $rows, 'sticky' => FALSE, 'attributes' => array('id' => 'webform-emails')));
     //$output .= drupal_render_children($form);
+    
     return $output;
   }
 
