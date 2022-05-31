@@ -19,7 +19,7 @@
  * Admin form to configurable welcome message
  */
   function recia_form($form, &$form_state) {
-    watchdog('recia_form','load');
+    watchdog('recia','recia_form');
     $modulesToManage = ['webform_confirm_email'];
     $modulesList = module_list();
     $form['recia_modules'] = array(
@@ -41,7 +41,7 @@
   }
 
   function recia_form_submit($form, &$form_state) {
-    watchdog('recia_form_submit','load');
+    watchdog('recia','recia_form_submit');
     $modulesToManage = ['webform_confirm_email'];
     $modulesList = module_list();
     
@@ -53,8 +53,8 @@
       if($module_enable == 0 && $module_enabled == 1)$modulesToDisable[]=$module;
       if($module_enable == 1 && $module_enabled == 0)$modulesToEnable[]=$module;
     }
-    watchdog('recia_form_submit','modulesToDisable');
-    watchdog('recia_form_submit','modulesToEnable');
+    watchdog('recia','modulesToDisable');
+    watchdog('recia','modulesToEnable');
     if(count($modulesToDisable))module_disable($modulesToDisable,false);
     if(count($modulesToEnable))module_enable($modulesToEnable,false);
   }
