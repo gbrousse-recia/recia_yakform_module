@@ -1,64 +1,19 @@
 <?php
   
   /**
-   * Implements hook_menu().
+   * Permissions
    */
-  function recia_menu() {
-    $items['admin/config/system/recia'] = array(
-      'title' => 'Recia module',
-      'page callback' => 'drupal_get_form',
-      'page arguments' => array('recia_form'),
-      'access arguments' => array('administer users'),
-      'type' => MENU_NORMAL_ITEM,
+  function recia_permission() {
+    return array(
+      'recia manage forms_templates' => array(
+        'title' => t('Allow user to manage yakforms templates'),
+        'restricted acces'=>true,
+      ),
+      'recia use mail confirmation' => array(
+        'title' => t('Allow user to send mail to conform email adresses'),
+        'restricted acces'=>true,
+      )
     );
-
-    return $items;
-  }
-
-  /**
- * Admin form to configurable welcome message
- */
-  function recia_form($form, &$form_state) {
-    watchdog('recia','recia_form');
-    $modulesToManage = ['webform_confirm_email'];
-    $modulesList = module_list();
-    $form['recia_modules'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Modules gestion'),
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,  
-    );
-    foreach ($modulesToManage as $module) {
-      $form['recia_modules']['recia_modules_'.$module] = array(
-        '#type' => 'radios',
-        '#title' => $module,
-        '#options' => array(t('disable'),t('enable')),
-        '#default_value' => in_array($module, $modulesList)?1:0,
-      );
-    }
-    
-    $form['#submit'][] = 'recia_form_submit';
-
-    return system_settings_form($form);
-  }
-
-  function recia_form_submit($form, &$form_state) {
-    watchdog('recia','recia_form_submit');
-    $modulesToManage = ['webform_confirm_email'];
-    $modulesList = module_list();
-    
-    $modulesToEnable = [];
-    $modulesToDisable = [];
-    foreach($modulesToManage as $module){
-      $module_enabled = in_array($module,$modulesList)?1:0;
-      $module_enable = variable_get('recia_modules_'.$module,3);
-      if($module_enable == 0 && $module_enabled == 1)$modulesToDisable[]=$module;
-      if($module_enable == 1 && $module_enabled == 0)$modulesToEnable[]=$module;
-    }
-    watchdog('recia','modulesToDisable : '.print_r($modulesToDisable,true));
-    watchdog('recia','modulesToEnable : '.print_r($modulesToEnable,true));
-    if(count($modulesToDisable))module_disable($modulesToDisable,false);
-    if(count($modulesToEnable))module_enable($modulesToEnable,false);
   }
 
   function recia_theme_registry_alter(&$registry) {
@@ -74,57 +29,116 @@
   }
 
   function theme_recia_emails_form($variables) {
-    $form = $variables['form'];
-    $node = $form['#node'];
-
-    $header = array(t('Send'), t('E-mail to'), t('Subject'), t('From'), array('data' => t('Operations'), 'colspan' => 3));
-    $rows = array();
-
-    if (!empty($form['emails'])) {
-      foreach (element_children($form['emails']) as $eid) {
-        // Add each component to a table row.
-        $rows[] = array(
-          array('data' => drupal_render($form['emails'][$eid]['status']), 'class' => array('webform-email-status', 'checkbox')),
-          drupal_render($form['emails'][$eid]['email']),
-          drupal_render($form['emails'][$eid]['subject']),
-          drupal_render($form['emails'][$eid]['from']),
-          l(t('Edit'), 'node/' . $node->nid . '/webform/emails/' . $eid),
-          l(t('Clone'), 'node/' . $node->nid . '/webform/emails/' . $eid . '/clone'),
-          l(t('Delete'), 'node/' . $node->nid . '/webform/emails/' . $eid . '/delete'),
-        );
-      }
-    }
-    else {
-      $rows[] = array(array('data' => t('Currently not sending e-mails, add an e-mail recipient below.'), 'colspan' => 7));
-    }
-
-    // Add a row containing form elements for a new item.
-    $add_button = drupal_render($form['add']['add']);
-    $row_data = array(
-      array('data' => drupal_render($form['add']['status']), 'class' => array('webform-email-status', 'checkbox')),
-      array('colspan' => 3, 'data' => drupal_render($form['add'])),
-      array('colspan' => 3, 'data' => $add_button),
+    $form = &$variables['form'];
+    $node = &$form['#node'];
+    $header = array(
+      t('Send'),
+      t('E-mail to'),
+      t('Subject'),
+      t('From'),
+      array(
+        'data'    => t('Operations'),
+        'colspan' => 2
+      )
     );
-    $rows[] = array('data' => $row_data, 'class' => array('webform-add-form'));
+    $header_confirmation_request = array(
+      t('Send'),
+      t('E-mail to'),
+      t('Subject'),
+      t('From'),
+      t('Redirect URL'),
+      array(
+        'data'    => t('Operations'),
+        'colspan' => 2
+      )
+    );
 
     $output = '';
-    $output .= theme('table', array('header' => $header, 'rows' => $rows, 'sticky' => FALSE, 'attributes' => array('id' => 'webform-emails')));
-    //$output .= drupal_render_children($form);
-    
+    $mailsTypes = array(
+      'emails'               => t('Standard emails (always send)')
+    );
+    if (user_access('recia manage forms_templates')) {
+      $mailsTypes = array(
+        'emails'               => t('Standard emails (always send)'),
+        'confirmation_request' => t('Confirmation request emails (always send)'),
+        'confirmation'         => t('Confirmation emails (only send when the confirmation URL is used)')
+      );
+    }
+    foreach($mailsTypes as $email_type => $title) {
+      $rows = array();
+
+      $eids = element_children($form[$email_type]);
+      if (array_search('add_button', $eids) !== FALSE) {
+        unset($eids[array_search('add_button', $eids)]);
+      }
+      if (array_search('add', $eids) !== FALSE) {
+        unset($eids[array_search('add', $eids)]);
+      }
+
+      if (count($eids) > 0) {
+        foreach ($eids as $eid) {
+          // Add each component to a table row.
+          $new_row = array(
+            drupal_render($form[$email_type][$eid]['status']),
+            drupal_render($form[$email_type][$eid]['email']),
+            drupal_render($form[$email_type][$eid]['subject']),
+            drupal_render($form[$email_type][$eid]['from']),
+          );
+          if ($email_type == 'confirmation_request') {
+            $new_row[] = drupal_render($form[$email_type][$eid]['redirect_url']);
+          }
+          $new_row[] = l(t('Edit'),   'node/' . $node->nid . '/webform/' . $email_type . '/' . $eid);
+          $new_row[] = drupal_render($form[$email_type][$eid]['delete_button']);
+
+          $rows[] = $new_row;
+        }
+      }
+      else {
+        $cs_width = 5;
+        switch($email_type) {
+          case 'emails':
+            $no_email_comment = t('Currently not sending standard e-mails, add a standard email by clicking the button below.');
+            break;
+          case 'confirmation_request':
+            $no_email_comment = t('Currently not sending confirmation request e-mails, add a confirmation request email by clicking the button below.');
+            $cs_width = 6;
+            break;
+          case 'confirmation':
+            $no_email_comment = t('Currently not sending confirmation e-mails, add a confirmation email by clicking the button below.');
+            break;
+        }
+        $rows[] = array(array('data' => $no_email_comment, 'colspan' => $cs_width));
+      }
+
+      // Add a row containing form elements for a new item.
+      $row_add_email = array(
+        array(
+          'colspan' => ($email_type == 'confirmation_request') ? 5 : 4,
+          'data'    => drupal_render($form[$email_type]['add'])
+        ),
+        array(
+          'colspan' => 2,
+          'data'    => drupal_render($form[$email_type]['add_button'])
+        ),
+      );
+      $rows[] =array('data' => $row_add_email, 'class' => array('webform-add-form'));
+      $output .= '<h2>' . $title . '</h2>';
+      $output .= theme(
+        'table',
+        array(
+          'header' => ($email_type == 'confirmation_request') ? $header_confirmation_request : $header,
+          'rows'   => $rows,
+          'attributes' => array('id' => 'webform-' . $email_type),
+        )
+      );
+    }
+
+    $output .= drupal_render_children($form);
+
     return $output;
   }
 
-  /**
-   * Permissions
-   */
-  function recia_permission() {
-    return array(
-      'recia manage forms_templates' => array(
-        'title' => t('Allow user to manage yakforms templates'),
-        'restricted acces'=>true,
-      )
-    );
-  }
+  
 
   function recia_form_alter(&$form, &$form_state, $form_id) {
     $formsId = ['webform_node_form','form1_node_form'];
