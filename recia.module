@@ -69,6 +69,12 @@
       unset($eids[array_search('add', $eids)]);
     }
 
+    if ($email_type != 'emails' && !user_access('recia use mail confirmation')) {
+      unset($form[$email_type]['add']);
+      unset($form[$email_type]['add_button']);
+      continue;
+    }
+
     if (count($eids) > 0) {
       foreach ($eids as $eid) {
         // Add each component to a table row.
@@ -105,7 +111,7 @@
     }
 
     // Add a row containing form elements for a new item.
-    /*$row_add_email = array(
+    $row_add_email = array(
       array(
         'colspan' => ($email_type == 'confirmation_request') ? 5 : 4,
         'data'    => drupal_render($form[$email_type]['add'])
@@ -114,7 +120,7 @@
         'colspan' => 2,
         'data'    => drupal_render($form[$email_type]['add_button'])
       ),
-    );*/
+    );
     $rows[] =array('data' => $row_add_email, 'class' => array('webform-add-form'));
     $output .= '<h2>' . $title . '</h2>';
     $output .= theme(
