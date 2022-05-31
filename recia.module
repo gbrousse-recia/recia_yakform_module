@@ -61,12 +61,12 @@
     $rows = array();
 
     $eids = element_children($form[$email_type]);
-    if (array_search('add_button', $eids) !== FALSE) {
+    /*if (array_search('add_button', $eids) !== FALSE) {
       unset($eids[array_search('add_button', $eids)]);
     }
     if (array_search('add', $eids) !== FALSE) {
       unset($eids[array_search('add', $eids)]);
-    }
+    }*/
 
     if (count($eids) > 0) {
       foreach ($eids as $eid) {
