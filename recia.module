@@ -24,6 +24,7 @@
       '#options' => array(
         'webform_confirm_email' => t('Webform confirm email'),
       ),
+      '#default_value' => variable_get( 'recia_modules_disable', array('webform_confirm_email') ),
     );
 
     return system_settings_form($form);
