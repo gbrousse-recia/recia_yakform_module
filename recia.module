@@ -64,6 +64,15 @@
   function recia_theme_registry_alter(&$registry) {
     $registry['webform_emails_form']['function']    = 'theme_recia_emails_form';
   }
+
+  function recia_module_implements_alter(&$implementations, $hook) {
+    if ($hook == 'theme_registry_alter') {
+      $group = $implementations['recia'];
+      unset($implementations['recia']);
+      $implementations['recia'] = $group;
+    }
+  }
+
   function theme_recia_emails_form($variables) {
     $form = $variables['form'];
     $node = $form['#node'];
