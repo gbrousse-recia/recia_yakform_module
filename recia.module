@@ -18,17 +18,36 @@
  * Admin form to configurable welcome message
  */
   function recia_form($form, &$form_state) {
-    $form['recia_modules_disable'] = array(
-      '#type' => 'checkboxes',
-      '#title' => t('Disable these modules'),
-      '#options' => array(
-        'webform_confirm_email' => t('Webform confirm email'),
-      ),
-      '#default_value' => variable_get( 'recia_modules_disable', array('webform_confirm_email') ),
+    $modulesList = module_list();
+    $form['recia_modules'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Modules gestion'),
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,  
+    );
+    $form['recia_modules']['webform_confirm_email'] = array(
+      '#type' => 'radios',
+      '#title' => t('Webform confirm email'),
+      '#options' => array(t('enable'),t('disable')),
+      '#default_value' => in_array('webform_confirm_email',$modulesList)?0:1,
     );
 
     return system_settings_form($form);
   }
+
+  /**
+   * Cron
+   */
+  function recia_cron() {
+    /*
+    $modulesList = module_list();
+    $modulesToDisable = variable_get('recia_modules_disable',[]);
+    if(count($modulesToDisable)){
+      foreach($modu)
+    }
+    */
+  }
+  
 
   /**
    * Permissions
