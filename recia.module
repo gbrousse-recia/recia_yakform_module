@@ -43,12 +43,16 @@
     $modulesToManage = ['webform_confirm_email'];
     $modulesList = module_list();
     
+    $modulesToEnable = [];
+    $modulesToDisable = [];
     foreach($modulesToManage as $module){
       $module_enabled = in_array($module,$modulesList)?1:0;
-      $module_disable = variable_get('recia_modules_'.$module,3);
-      if($module_disable == 0 && $module_enabled == 1)module_disable($module,false);
-      if($module_disable == 1 && $module_enabled == 0)module_enable($module,false);
+      $module_enable = variable_get('recia_modules_'.$module,3);
+      if($module_enable == 0 && $module_enabled == 1)$modulesToDisable[]=$module;
+      if($module_enable == 1 && $module_enabled == 0)$modulesToEnable[]=$module;
     }
+    if(count($modulesToDisable))module_disable($modulesToDisable,false);
+    if(count($modulesToEnable))module_enable($modulesToEnable,false);
   }
 
   /**
