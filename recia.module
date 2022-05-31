@@ -1,5 +1,35 @@
 <?php
   /**
+   * Implements hook_menu().
+   */
+  function welcome_menu() {
+    $items['admin/config/system/recia'] = array(
+      'title' => 'Recia module',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('recia_form'),
+      'access arguments' => array('administer users'),
+      'type' => MENU_NORMAL_ITEM,
+    );
+
+    return $items;
+  }
+
+  /**
+ * Admin form to configurable welcome message
+ */
+  function welcome_form($form, &$form_state) {
+    $form['recia_modules_disable'] = array(
+      '#type' => 'checkboxes',
+      '#title' => t('Disable these modules'),
+      '#options' => array(
+        'webform_confirm_email' => t('Webform confirm email'),
+      ),
+    );
+
+    return system_settings_form($form);
+  }
+
+  /**
    * Permissions
    */
   function recia_permission() {
