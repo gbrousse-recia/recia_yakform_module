@@ -19,6 +19,7 @@
  * Admin form to configurable welcome message
  */
   function recia_form($form, &$form_state) {
+    watchdog('recia_form','load');
     $modulesToManage = ['webform_confirm_email'];
     $modulesList = module_list();
     $form['recia_modules'] = array(
@@ -40,6 +41,7 @@
   }
 
   function recia_form_submit($form, &$form_state) {
+    watchdog('recia_form_submit','load');
     $modulesToManage = ['webform_confirm_email'];
     $modulesList = module_list();
     
