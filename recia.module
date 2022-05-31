@@ -65,9 +65,43 @@
     $registry['webform_emails_form']['function']    = 'theme_recia_emails_form';
   }
   function theme_recia_emails_form($variables) {
-    $form = &$variables['form'];
-    print_r($form);
-    return drupal_render_children($form);
+    $form = $variables['form'];
+    $node = $form['#node'];
+
+    $header = array(t('Send'), t('E-mail to'), t('Subject'), t('From'), array('data' => t('Operations'), 'colspan' => 3));
+    $rows = array();
+
+    if (!empty($form['emails'])) {
+      foreach (element_children($form['emails']) as $eid) {
+        // Add each component to a table row.
+        $rows[] = array(
+          array('data' => drupal_render($form['emails'][$eid]['status']), 'class' => array('webform-email-status', 'checkbox')),
+          drupal_render($form['emails'][$eid]['email']),
+          drupal_render($form['emails'][$eid]['subject']),
+          drupal_render($form['emails'][$eid]['from']),
+          l(t('Edit'), 'node/' . $node->nid . '/webform/emails/' . $eid),
+          l(t('Clone'), 'node/' . $node->nid . '/webform/emails/' . $eid . '/clone'),
+          l(t('Delete'), 'node/' . $node->nid . '/webform/emails/' . $eid . '/delete'),
+        );
+      }
+    }
+    else {
+      $rows[] = array(array('data' => t('Currently not sending e-mails, add an e-mail recipient below.'), 'colspan' => 7));
+    }
+
+    // Add a row containing form elements for a new item.
+    $add_button = drupal_render($form['add']['add']);
+    $row_data = array(
+      array('data' => drupal_render($form['add']['status']), 'class' => array('webform-email-status', 'checkbox')),
+      array('colspan' => 3, 'data' => drupal_render($form['add'])),
+      array('colspan' => 3, 'data' => $add_button),
+    );
+    $rows[] = array('data' => $row_data, 'class' => array('webform-add-form'));
+
+    $output = '';
+    $output .= theme('table', array('header' => $header, 'rows' => $rows, 'sticky' => FALSE, 'attributes' => array('id' => 'webform-emails')));
+    //$output .= drupal_render_children($form);
+    return $output;
   }
 
   /**
