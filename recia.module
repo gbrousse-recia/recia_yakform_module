@@ -67,7 +67,7 @@
   function theme_recia_emails_form($variables) {
     $form = &$variables['form'];
     print_r($form);
-    return $form;
+    return drupal_render_children($form);
   }
 
   /**
