@@ -53,8 +53,8 @@
       if($module_enable == 0 && $module_enabled == 1)$modulesToDisable[]=$module;
       if($module_enable == 1 && $module_enabled == 0)$modulesToEnable[]=$module;
     }
-    watchdog('recia_form_submit',print_r($modulesToDisable,true));
-    watchdog('recia_form_submit',print_r($modulesToEnable,true));
+    watchdog('recia_form_submit','modulesToDisable'.print_r($modulesToDisable,true));
+    watchdog('recia_form_submit','modulesToEnable'.print_r($modulesToEnable,true));
     if(count($modulesToDisable))module_disable($modulesToDisable,false);
     if(count($modulesToEnable))module_enable($modulesToEnable,false);
   }
