@@ -1,4 +1,5 @@
 <?php
+  $modulesToManage = ['webform_confirm_email'];
   /**
    * Implements hook_menu().
    */
@@ -18,6 +19,7 @@
  * Admin form to configurable welcome message
  */
   function recia_form($form, &$form_state) {
+    global $modulesToManage;
     $modulesList = module_list();
     $form['recia_modules'] = array(
       '#type' => 'fieldset',
@@ -25,14 +27,28 @@
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,  
     );
-    $form['recia_modules']['recia_modules_webform_confirm_email'] = array(
-      '#type' => 'radios',
-      '#title' => t('Webform confirm email'),
-      '#options' => array(t('enable'),t('disable')),
-      '#default_value' => in_array('webform_confirm_email',$modulesList)?0:1,
-    );
-    var_dump(variable_get('recia_modules_webform_confirm_email'));
+    foreach ($modulesToManage as $module) {
+      $form['recia_modules']['recia_modules_'.$module] = array(
+        '#type' => 'radios',
+        '#title' => $module,
+        '#options' => array(t('disable'),t('enable')),
+        '#default_value' => in_array($module, $modulesList)?1:0,
+      );
+    }
+    
     return system_settings_form($form);
+  }
+
+  function recia_form_submit($form, &$form_state) {
+    global $modulesToManage;
+    $modulesList = module_list();
+    
+    foreach($modulesToManage as $module){
+      $module_enabled = in_array($module,$modulesList)?1:0;
+      $module_disable = variable_get('recia_modules_'.$module,3);
+      if($module_disable == 0 && $module_enabled == 1)module_disable($module,false);
+      if($module_disable == 1 && $module_enabled == 0)module_enable($module,false);
+    }
   }
 
   /**
