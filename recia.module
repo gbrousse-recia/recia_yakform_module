@@ -2,7 +2,7 @@
   /**
    * Implements hook_menu().
    */
-  function welcome_menu() {
+  function recia_menu() {
     $items['admin/config/system/recia'] = array(
       'title' => 'Recia module',
       'page callback' => 'drupal_get_form',
@@ -17,7 +17,7 @@
   /**
  * Admin form to configurable welcome message
  */
-  function welcome_form($form, &$form_state) {
+  function recia_form($form, &$form_state) {
     $form['recia_modules_disable'] = array(
       '#type' => 'checkboxes',
       '#title' => t('Disable these modules'),
