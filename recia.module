@@ -58,6 +58,9 @@
       $form['field_form1_template']['#access'] = false;
       $form['field_form1_template_desc']['#access'] = false;
     }
+
+    //$form['field_form1_results_public']['#access'] = false;
+    //$form['field_form1_results_access']['#access'] = false;
   }
 
   function recia_menu_alter(&$items) {
@@ -111,8 +114,13 @@
     global $user;
     global $base_url;
     $block = array();
+    $logOutUrl = $base_url.'/user/logout';
+    if (module_exists('cas')) $logOutUrl = $base_url.'/caslogout';
     switch($delta){
       case 'recia_home_button':
+        if (!user_is_logged_in()) {
+          return;
+        }
         $block['content']['#markup'] ='<footer id="homeback">';
         $block['content']['#markup'] .='  <a class="button" href="'.$base_url.'">'.strtoupper(t('return to home')).'</a>';
         $block['content']['#markup'] .='</footer>';
@@ -122,7 +130,7 @@
             return;
           }
           $block['content']['#markup'] =  '<div class="navbar-nav">';
-          $block['content']['#markup'] .= ' <a href="'.$base_url.'/user" class="button btn btn-primary btn-sm" role="button">'.t("Log in").'</a>';
+          $block['content']['#markup'] .= ' <a href="'.$base_url.'" class="button btn btn-primary btn-sm" role="button">'.t("Log in").'</a>';
           $block['content']['#markup'] .= '</div>';
           $block['content']['#markup'] .= '</div>';
           break;
@@ -138,7 +146,7 @@
         $block['content']['#markup'] .='    </button>';
         $block['content']['#markup'] .='    <ul class="dropdown-menu">';
         $block['content']['#markup'] .='      <li>';
-        $block['content']['#markup'] .='        <a href="'.$base_url.'/user/logout">'.t('Disconnect').'</a>';
+        $block['content']['#markup'] .='        <a href="'.$logOutUrl.'">'.t('Disconnect').'</a>';
         $block['content']['#markup'] .='      </li>';
         $block['content']['#markup'] .='    </ul>';
         $block['content']['#markup'] .=' </div>';
@@ -173,7 +181,7 @@
         $block['content']['#markup'] .='        <a href="'.$base_url.'?forms">'.t('My forms').'</a>';
         $block['content']['#markup'] .='      </li>';
         $block['content']['#markup'] .='      <li>';
-        $block['content']['#markup'] .='        <a href="'.$base_url.'/user/logout">'.t('Disconnect').'</a>';
+        $block['content']['#markup'] .='        <a href="'.$logOutUrl.'">'.t('Disconnect').'</a>';
         $block['content']['#markup'] .='      </li>';
         $block['content']['#markup'] .='    </ul>';
         $block['content']['#markup'] .='  </div>';
@@ -181,10 +189,10 @@
         break;
         case 'recia_user_menu_all':
           if (!user_is_logged_in()) {
-              $block['content']['#markup'] =  '<div class="navbar-nav">';
-              $block['content']['#markup'] .= ' <a href="'.$base_url.'/user" class="button btn btn-primary btn-sm" role="button">'.t("Log in").'</a>';
+              /*$block['content']['#markup'] =  '<div class="navbar-nav">';
+              $block['content']['#markup'] .= l(t("Connexion"),"cas",array('attributes'=> array('class' =>array('button','btn','btn-primary','btn-sm')),'query' => drupal_get_destination()));//' <a href="'.$base_url.'/" class="button btn btn-primary btn-sm" role="button">'.t("Log in").'</a>';
               $block['content']['#markup'] .= '</div>';
-              $block['content']['#markup'] .= '</div>';
+              $block['content']['#markup'] .= '</div>';*/
           }else{
             $block['content']['#markup'] ='<div class="navbar-nav">';
             if (user_access('create webform content') || user_access('create form1 content')) {
@@ -217,7 +225,7 @@
               $block['content']['#markup'] .='      </li>';
             }
             $block['content']['#markup'] .='      <li>';
-            $block['content']['#markup'] .='        <a href="'.$base_url.'/user/logout">'.t('Disconnect').'</a>';
+            $block['content']['#markup'] .='        <a href="'.$logOutUrl.'">'.t('Disconnect').'</a>';
             $block['content']['#markup'] .='      </li>';
             $block['content']['#markup'] .='    </ul>';
             $block['content']['#markup'] .='  </div>';
