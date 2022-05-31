@@ -31,7 +31,7 @@
       '#options' => array(t('enable'),t('disable')),
       '#default_value' => in_array('webform_confirm_email',$modulesList)?0:1,
     );
-    var_dump(variable_get('recia_modules'))
+    var_dump(variable_get('recia_modules'));
     return system_settings_form($form);
   }
 
