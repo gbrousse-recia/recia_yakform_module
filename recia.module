@@ -54,17 +54,12 @@
     );
 
     $output = '';
-    $mailsTypes = array(
-      'emails'               => t('Standard emails (always send)')
-    );
-    if (user_access('recia manage forms_templates')) {
-      $mailsTypes = array(
-        'emails'               => t('Standard emails (always send)'),
-        'confirmation_request' => t('Confirmation request emails (always send)'),
-        'confirmation'         => t('Confirmation emails (only send when the confirmation URL is used)')
-      );
-    }
-    foreach($mailsTypes as $email_type => $title) {
+
+    foreach(array(
+      'emails'               => t('Standard emails (always send)'),
+      'confirmation_request' => t('Confirmation request emails (always send)'),
+      'confirmation'         => t('Confirmation emails (only send when the confirmation URL is used)')
+    ) as $email_type => $title) {
       $rows = array();
 
       $eids = element_children($form[$email_type]);
@@ -74,6 +69,8 @@
       if (array_search('add', $eids) !== FALSE) {
         unset($eids[array_search('add', $eids)]);
       }
+
+      if($email_type != 'emails' && !user_access('recia manage forms_templates'))continue;
 
       if (count($eids) > 0) {
         foreach ($eids as $eid) {
